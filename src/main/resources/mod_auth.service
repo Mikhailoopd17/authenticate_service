@@ -1,0 +1,11 @@
+[Unit]
+Description=auth module
+
+[Service]
+User=hs
+ExecStart=java -jar /opt/mod_auth/mod_auth.jar --spring.config.location=/opt/config/mod_auth.properties
+ExecStop=curl -X POST localhost:8081/shutdown
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

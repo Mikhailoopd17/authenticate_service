@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.authenticate_service.dao.UserProfileDAO">
+
+    <select id="getUserProfileByParams" resultMap="userProfileMap">
+        SELECT
+        u.id as id,
+        u.login as login,
+        r.role_type as role
+        FROM users u
+        INNER JOIN user_roles ur on ur.user_id = u.id and ur.deleted_at is null
+        INNER JOIN roles r on ur.role_id = r.id and r.deleted_at is null
+        <if test="params.token != null">
+            INNER JOIN authentications a on a.user_id = u.id
+        </if>
+        WHERE true
+        <if test="params.token != null">
+            AND a.token = #{params.token}
+        </if>
+        <if test="params.token == null and params.id != null">
+            AND  u.id = #{params.id}
+        </if>
+    </select>
+
+
+    <resultMap id="userProfileMap" type="commons.users.UserProfile">
+        <id column="id" property="userId"/>
+        <result column="login" property="login"/>
+        <result column="role" property="role"/>
+    </resultMap>
+</mapper>

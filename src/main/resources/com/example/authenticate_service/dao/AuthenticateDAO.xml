@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.authenticate_service.dao.AuthenticateDAO">
+
+    <sql id="fields">
+        id,
+        created_at,
+        is_deleted,
+        user_id,
+        last_visit,
+        token,
+        sing_count
+    </sql>
+
+    <select id="getOneByParams" resultMap="authenticateMap">
+        SELECT
+        <include refid="fields"/>
+        FROM authentications
+        WHERE true
+        <if test="params.id != null">
+            AND id = #{params.id}
+        </if>
+        <if test="params.userId != null">
+            AND user_id = #{params.userId}
+        </if>
+    </select>
+
+    <insert id="create" useGeneratedKeys="true">
+        INSERT INTO authentications
+        (created_at, is_deleted, user_id, last_visit, token, sing_count)
+        VALUES (now(), false, #{userId}, now(), #{token}, 1)
+    </insert>
+
+    <update id="update">
+        UPDATE authentications
+        SET last_visit = now(), token = #{token}, sing_count = #{singCount}
+        WHERE id = #{id}
+    </update>
+
+
+    <resultMap id="authenticateMap" type="com.example.authenticate_service.pojo.Authenticate">
+        <id column="id" property="id"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="user_id" property="userId"/>
+        <result column="last_visit" property="lastVisit"/>
+        <result column="token" property="token"/>
+        <result column="sing_count" property="singCount"/>
+    </resultMap>
+
+</mapper>
