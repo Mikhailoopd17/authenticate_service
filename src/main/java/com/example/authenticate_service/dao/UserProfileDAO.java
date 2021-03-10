@@ -9,4 +9,6 @@ import java.util.Map;
 @Mapper
 public interface UserProfileDAO {
     UserProfile getUserProfileByParams(@Param("params") Map params);
+
+
 }

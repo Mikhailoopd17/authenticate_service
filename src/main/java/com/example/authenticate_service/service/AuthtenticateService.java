@@ -71,14 +71,8 @@ public class AuthtenticateService {
         return token;
     }
 
-    public UserProfile checkToken(String token) {
-        Authenticate authenticate = authenticateDAO.getOneByParams(Collections.singletonMap("token", token));
-        if (authenticate != null) {
-            if (authenticate.getLastVisit() != null && authenticate.getLastVisit().plusMinutes(30).isBefore(LocalDateTime.now())) {
-                return userProfileDAO.getUserProfileByParams(Collections.singletonMap("id", authenticate.getUserId()));
-            }
-        }
-        return null;
+    public Boolean checkToken(String token) {
+        return authenticateDAO.checkToken(token);
     }
 
 

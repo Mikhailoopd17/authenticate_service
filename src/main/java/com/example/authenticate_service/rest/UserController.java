@@ -5,11 +5,8 @@ import com.example.authenticate_service.pojo.Authenticate;
 import com.example.authenticate_service.pojo.Credentials;
 import com.example.authenticate_service.service.AuthtenticateService;
 import com.example.authenticate_service.service.UserService;
-import commons.users.UserProfile;
+import com.example.authenticate_service.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -19,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping(value = "${web.prefix}/auth", produces = "application/json; charset=UTF-8")
 public class UserController {
-    private final String COOKIE_NAME = "token";
+    private static final String COOKIE_NAME = "token";
 
     @Autowired
     private UserService userService;
@@ -27,49 +24,28 @@ public class UserController {
     @Autowired
     private AuthtenticateService authtenticateService;
 
-//    @Autowired
-//    private UserProfileDAO userProfileDAO;
-
     @PostMapping("/login")
-    public HttpStatus userAuthorize(HttpServletRequest request,
+    public HttpServletResponse userAuthorize(HttpServletRequest request,
                                     HttpServletResponse response,
                                     @RequestBody Credentials credentials) throws Exception {
         Cookie cookie = userService.authorize(credentials);
         response.addCookie(cookie);
-//        response.addHeader(cookie.getName(), cookie.getValue());
-//        String profile = userProfileDAO.getUserProfileByParams(Collections.singletonMap("token", cookie.getValue())).getJson();
-//        response.addHeader("profile", profile);
-        return HttpStatus.OK;
+        return response;
     }
 
     @GetMapping("/current")
-    public HttpStatus current(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        if (request == null) {
-            return HttpStatus.FORBIDDEN;
-        }
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies == null) {
-            return null;
-        }
-        String token = "";
-        for (Cookie c : cookies) {
-            if (c.getName().equals(COOKIE_NAME)) {
-                token = c.getValue();
-            }
-        }
-
+    public HttpServletResponse current(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String token = CookieUtil.extractCookie(COOKIE_NAME, request);
         if (token.isEmpty()) {
-            return HttpStatus.FORBIDDEN;
+            response.sendError(403, "Access denied");
         }
 
-        UserProfile userProfile = authtenticateService.checkToken(token);
-        if (userProfile != null) {
-            return HttpStatus.OK;
+        if (authtenticateService.checkToken(token)) {
+            response.setStatus(200);
+
         } else {
-            throw new Exception("Error! user - null");
+            response.sendError(403, "Access denied");
         }
-
-
+        return response;
     }
 }

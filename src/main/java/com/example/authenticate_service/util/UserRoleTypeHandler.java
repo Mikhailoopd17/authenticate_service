@@ -1,8 +1,6 @@
-package commons.typeHandler;
+package com.example.authenticate_service.util;
 
 import commons.users.RoleType;
-import org.apache.ibatis.type.EnumTypeHandler;
-import org.apache.ibatis.type.IntegerTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 

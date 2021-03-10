@@ -40,6 +40,14 @@
         WHERE id = #{id}
     </update>
 
+    <select id="checkToken">
+        SELECT EXISTS (
+          SELECT 1 FROM authentications
+          WHERE token = #{token}
+          AND (now() - last_visit) $lte '30'::interval
+        )
+    </select>
+
 
     <resultMap id="authenticateMap" type="com.example.authenticate_service.pojo.Authenticate">
         <id column="id" property="id"/>

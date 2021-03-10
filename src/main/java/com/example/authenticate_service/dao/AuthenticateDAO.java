@@ -19,6 +19,6 @@ public interface AuthenticateDAO {
             "SELECT 1 FROM authentications WHERE token = #{token})")
     boolean isExistsToken(@Param("token") String token);
 
-
+    Boolean checkToken(@Param("token") String token);
 }
 
