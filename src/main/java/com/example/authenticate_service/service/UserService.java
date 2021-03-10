@@ -31,7 +31,7 @@ public class UserService {
         credentials.setPassword(md5WithSalt);
         User user = userDAO.getUserByCredentials(credentials);
         if (user == null) {
-            throw new AccessDeniedException("Access denied");
+            return null;
         }
         return authtenticateService.getAuthenticate(user);
     }

@@ -29,6 +29,10 @@ public class UserController {
                                     HttpServletResponse response,
                                     @RequestBody Credentials credentials) throws Exception {
         Cookie cookie = userService.authorize(credentials);
+        if (cookie == null) {
+            response.sendError(403, "Wrong login or password");
+            return;
+        }
         response.addCookie(cookie);
     }
 
@@ -37,13 +41,12 @@ public class UserController {
         String token = CookieUtil.extractCookie(COOKIE_NAME, request);
         if (token == null) {
             response.sendError(401, "Access denied");
-        } else {
-            if (authtenticateService.checkToken(token)) {
-                response.setStatus(200);
-            } else {
-                response.sendError(403, "Access denied");
-            }
+            return;
         }
-//        return response;
+        if (authtenticateService.checkToken(token)) {
+            response.setStatus(200);
+            return;
+        }
+        response.sendError(403, "Access denied");
     }
 }
