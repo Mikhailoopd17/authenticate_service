@@ -1,7 +1,5 @@
 package com.example.authenticate_service.rest;
 
-import com.example.authenticate_service.dao.UserProfileDAO;
-import com.example.authenticate_service.pojo.Authenticate;
 import com.example.authenticate_service.pojo.Credentials;
 import com.example.authenticate_service.service.AuthtenticateService;
 import com.example.authenticate_service.service.UserService;
@@ -44,6 +42,7 @@ public class UserController {
             return;
         }
         if (authtenticateService.checkToken(token)) {
+            authtenticateService.updateAuthenticate(token);
             response.setStatus(200);
             return;
         }

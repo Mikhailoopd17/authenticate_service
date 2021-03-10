@@ -20,5 +20,7 @@ public interface AuthenticateDAO {
     boolean isExistsToken(@Param("token") String token);
 
     Boolean checkToken(@Param("token") String token);
+
+    void updateAuthenticate(@Param("token") String token);
 }
 

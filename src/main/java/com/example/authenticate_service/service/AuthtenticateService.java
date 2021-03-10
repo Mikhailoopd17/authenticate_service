@@ -76,4 +76,7 @@ public class AuthtenticateService {
     }
 
 
+    public void updateAuthenticate(String token) {
+        authenticateDAO.updateAuthenticate(token);
+    }
 }
