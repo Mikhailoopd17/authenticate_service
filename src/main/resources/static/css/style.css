@@ -1,22 +1,25 @@
-.form_auth_block{
-    width: 500px;
-    height: 500px;
-    margin: 0 auto;
+body {
     background: dodgerblue;
+}
+.form_auth_block{
+    width: 300px;
+    height: 300px;
+    margin: auto;
+    background: whitesmoke;
     background-size: cover;
     border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
 }
 .form_auth_block_content{
-    padding-top: 15%;
+    padding-top: 5%;
 }
 .form_auth_block_head_text{
     display: block;
     text-align: center;
-    padding: 10px;
+    /*padding: 10px;*/
     font-size: 20px;
     font-weight: 600;
-    background: #ffffff;
-    opacity: 0.7;
+    opacity: 1.0;
 }
 .form_auth_block label{
     display: block;
@@ -30,11 +33,11 @@
 }
 .form_auth_block input{
     display: block;
-    margin: 0 auto;
+    margin: 15px auto;
     width: 80%;
     height: 45px;
     border-radius: 10px;
-    border:none;
+    border: solid 0.5px gray;
     outline: none;
 }
 input:focus {
@@ -45,12 +48,13 @@ input:focus {
 .form_auth_button{
     display: block;
     width: 80%;
-    margin: 0 auto;
-    margin-top: 10px;
+    margin: 30px auto;
+    /*margin-top: 15px;*/
     border-radius: 10px;
-    height: 35px;
+    height: 45px;
     border: none;
     cursor: pointer;
+    background: orange;
 }
 ::-webkit-input-placeholder {color:#3f3f44; padding-left: 10px;}
 ::-moz-placeholder          {color:#3f3f44; padding-left: 10px;}

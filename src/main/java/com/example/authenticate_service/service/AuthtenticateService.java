@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,6 +69,16 @@ public class AuthtenticateService {
             getToken();
         }
         return token;
+    }
+
+    public UserProfile checkToken(String token) {
+        Authenticate authenticate = authenticateDAO.getOneByParams(Collections.singletonMap("token", token));
+        if (authenticate != null) {
+            if (authenticate.getLastVisit() != null && authenticate.getLastVisit().plusMinutes(30).isBefore(LocalDateTime.now())) {
+                return userProfileDAO.getUserProfileByParams(Collections.singletonMap("id", authenticate.getUserId()));
+            }
+        }
+        return null;
     }
 
 

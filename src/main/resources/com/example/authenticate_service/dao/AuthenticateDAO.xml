@@ -23,6 +23,9 @@
         <if test="params.userId != null">
             AND user_id = #{params.userId}
         </if>
+        <if test="params.token != null">
+            AND token = #{params.token}
+        </if>
     </select>
 
     <insert id="create" useGeneratedKeys="true">
