@@ -34,18 +34,17 @@ public class UserController {
     }
 
     @GetMapping("/current")
-    public HttpServletResponse current(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void current(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String token = CookieUtil.extractCookie(COOKIE_NAME, request);
-        if (token.isEmpty()) {
-            response.sendError(403, "Access denied");
-        }
-
-        if (authtenticateService.checkToken(token)) {
-            response.setStatus(200);
-
+        if (token == null) {
+            response.sendError(401, "Access denied");
         } else {
-            response.sendError(403, "Access denied");
+            if (authtenticateService.checkToken(token)) {
+                response.setStatus(200);
+            } else {
+                response.sendError(403, "Access denied");
+            }
         }
-        return response;
+//        return response;
     }
 }

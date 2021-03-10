@@ -40,11 +40,11 @@
         WHERE id = #{id}
     </update>
 
-    <select id="checkToken">
+    <select id="checkToken" resultType="Boolean">
         SELECT EXISTS (
           SELECT 1 FROM authentications
           WHERE token = #{token}
-          AND (now() - last_visit) $lte '30'::interval
+          AND (now() - last_visit) &lt; '30'::interval
         )
     </select>
 
