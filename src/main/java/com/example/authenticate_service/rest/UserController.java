@@ -25,12 +25,11 @@ public class UserController {
     private AuthtenticateService authtenticateService;
 
     @PostMapping("/login")
-    public HttpServletResponse userAuthorize(HttpServletRequest request,
+    public void userAuthorize(HttpServletRequest request,
                                     HttpServletResponse response,
                                     @RequestBody Credentials credentials) throws Exception {
         Cookie cookie = userService.authorize(credentials);
         response.addCookie(cookie);
-        return response;
     }
 
     @GetMapping("/current")
