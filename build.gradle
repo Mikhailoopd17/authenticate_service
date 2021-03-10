@@ -5,8 +5,8 @@ plugins {
 }
 
 group = 'com.example'
-version = '0.1'
 sourceCompatibility = '11'
+targetCompatibility = '11'
 
 configurations {
 	compileOnly {
@@ -22,8 +22,7 @@ task copyFiles  (type: Copy) {
 	into "distr"
 
 	into("/") {
-		from  "build/libs/authenticate_service-0.1.jar"
-		rename 'authenticate_service-0.1.jar', 'mod_auth.jar'
+		from  "build/libs/mod_auth.jar"
 	}
 	into("/") {
 		from "src/main/resources/application.properties"
