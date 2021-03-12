@@ -2,6 +2,7 @@ package com.example.authenticate_service.rest;
 
 import com.example.authenticate_service.pojo.Credentials;
 import com.example.authenticate_service.service.AuthtenticateService;
+import com.example.authenticate_service.service.TokenService;
 import com.example.authenticate_service.service.UserService;
 import com.example.authenticate_service.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +12,20 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.example.authenticate_service.AuthenticateServiceApplication.COOKIE_NAME;
+
 @RestController
 @RequestMapping(value = "${web.prefix}/auth", produces = "application/json; charset=UTF-8")
 public class UserController {
-    private static final String COOKIE_NAME = "token";
 
     @Autowired
     private UserService userService;
 
     @Autowired
     private AuthtenticateService authtenticateService;
+
+    @Autowired
+    private TokenService tokenService;
 
     @PostMapping("/login")
     public void userAuthorize(HttpServletRequest request,
@@ -41,7 +46,7 @@ public class UserController {
             response.sendError(401, "Access denied");
             return;
         }
-        if (authtenticateService.checkToken(token)) {
+        if (tokenService.checkToken(token)) {
             authtenticateService.updateAuthenticate(token);
             response.setStatus(200);
             return;
